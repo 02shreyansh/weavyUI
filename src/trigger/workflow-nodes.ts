@@ -2,15 +2,14 @@ import { task } from "@trigger.dev/sdk/v3";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 export { cropImageTask, extractFrameTask } from "./ffmpeg-tasks";
 
-// Initialize Gemini
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-// 1. Define the Input Payload Type strictly
+
 interface AIJobPayload {
     prompt: string;
     systemPrompt?: string;
-    imageUrls?: string[]; // Array of Base64 strings or URLs
-    model?: string;       // e.g., "gemini-1.5-flash"
+    imageUrls?: string[]; 
+    model?: string;       
     temperature?: number;
 }
 
@@ -27,10 +26,7 @@ export const aiGenerator = task({
         const model = genAI.getGenerativeModel({ model: modelName });
 
         try {
-            // Prepare Content Parts for Multimodal Input
             const parts: any[] = [];
-
-            // Add System Prompt if exists (prepend to text)
             let fullText = payload.prompt;
             if (payload.systemPrompt) {
                 fullText = `System Instructions: ${payload.systemPrompt}\n\nUser Request: ${payload.prompt}`;

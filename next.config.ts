@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
       },
       {
         protocol: "https",
-        hostname: "assets.weavy.ai", // Adding this just in case you use images from their asset server too
+        hostname: "assets.weavy.ai",
       },
     ],
   },
