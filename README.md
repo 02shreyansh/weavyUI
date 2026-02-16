@@ -1,13 +1,5 @@
 # Weave - Assignment
 
-A pixel-perfect clone of [Weavy.ai](https://weavy.ai) — a visual workflow builder for LLM-powered automations. Built with React Flow, Google Gemini AI, and Trigger.dev.
-
-![Next.js](https://img.shields.io/badge/Next.js-16-black?logo=next.js)
-![TypeScript](https://img.shields.io/badge/TypeScript-5-blue?logo=typescript)
-![React Flow](https://img.shields.io/badge/React_Flow-12-purple)
-![Trigger.dev](https://img.shields.io/badge/Trigger.dev-Enabled-green)
-
-
 **Watch the Demo:** [Click here to watch on Loom](https://www.loom.com/share/49a6cdb5c53449bd82d7528752ee976c)
 
 ---
