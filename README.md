@@ -1,4 +1,4 @@
-# Weave - Visual AI Workflow Builder
+# Weave - Assignment
 
 A pixel-perfect clone of [Weavy.ai](https://weavy.ai) — a visual workflow builder for LLM-powered automations. Built with React Flow, Google Gemini AI, and Trigger.dev.
 
@@ -21,9 +21,6 @@ A pixel-perfect clone of [Weavy.ai](https://weavy.ai) — a visual workflow buil
   - [Installation](#installation)
 - [Environment Variables](#environment-variables)
 - [Project Structure](#project-structure)
-- [Documentation](#documentation)
-- [License](#license)
-- [Connect with me](#connect-with-me)
 
 ---
 
@@ -118,18 +115,3 @@ src/
 ├── trigger/             # Trigger.dev background tasks
 └── prisma/              # Database schema
 ```
-
-## Documentation
-
-| Document | Description |
-|----------|-------------|
-| [High-Level Design (HLD)](docs/HLD.md) | System architecture, components, and data flow |
-| [Low-Level Design (LLD)](docs/LLD.md) | Database schema, API endpoints, and execution flow |
-
-## License
-
-MIT License - see [LICENSE](LICENSE) file for details.
-
-## Connect with me
-
-If you'd like to connect, feel free to reach out — [Click here](https://minianonlink.vercel.app/tusharbhardwaj)

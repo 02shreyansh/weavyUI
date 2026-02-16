@@ -19,7 +19,6 @@ interface EdgeData {
     targetHandle?: string;
 }
 
-// Memory to store outputs of previous nodes
 interface ExecutionContext {
     [nodeId: string]: {
         text?: string;
@@ -28,19 +27,15 @@ interface ExecutionContext {
     };
 }
 
-// --- Algorithm: Parallel Execution Layers ---
-// Returns an array of arrays. Each inner array is a "layer" of nodes that can run in parallel.
 function getExecutionLayers(nodes: NodeData[], edges: EdgeData[]): NodeData[][] {
     const inDegree = new Map<string, number>();
     const adj = new Map<string, string[]>();
 
-    // Init
     nodes.forEach((n) => {
         inDegree.set(n.id, 0);
         adj.set(n.id, []);
     });
 
-    // Build Graph
     edges.forEach((edge) => {
         if (adj.has(edge.source) && adj.has(edge.target)) {
             adj.get(edge.source)!.push(edge.target);
@@ -51,22 +46,19 @@ function getExecutionLayers(nodes: NodeData[], edges: EdgeData[]): NodeData[][] 
     const layers: NodeData[][] = [];
     let queue: string[] = [];
 
-    // Find Layer 0 (Start Nodes)
     inDegree.forEach((degree, id) => {
         if (degree === 0) queue.push(id);
     });
 
     while (queue.length > 0) {
         const currentLayerIds = [...queue];
-        queue = []; // Reset for next layer
+        queue = []; 
 
         const currentLayerNodes = currentLayerIds
             .map(id => nodes.find(n => n.id === id))
             .filter((n): n is NodeData => !!n);
 
         layers.push(currentLayerNodes);
-
-        // Process this layer to find the next layer
         for (const id of currentLayerIds) {
             const neighbors = adj.get(id) || [];
             for (const neighbor of neighbors) {
@@ -98,8 +90,8 @@ export const orchestrator = task({
         // 2. Plan Execution Layers
         const layers = getExecutionLayers(nodes, edges);
 
-        console.log(`🚀 [Orchestrator] Starting Run: ${run.id}`);
-        console.log(`📋 [Orchestrator] Layers: ${layers.length}`);
+        console.log(`[Orchestrator] Starting Run: ${run.id}`);
+        console.log(`[Orchestrator] Layers: ${layers.length}`);
 
         // 3. Context (Memory)
         const context: ExecutionContext = {};
@@ -113,11 +105,7 @@ export const orchestrator = task({
         try {
             // 5. Execution Loop (Layer by Layer)
             for (const [index, layer] of layers.entries()) {
-                console.log(`⚡ [Orchestrator] Executing Layer ${index + 1} with ${layer.length} nodes`);
-
-                // Run all nodes in this layer executing concurrently
-                // Strategy: Trigger all tasks first (Parallel), then poll results sequentially (Serial Wait)
-
+                console.log(`[Orchestrator] Executing Layer ${index + 1} with ${layer.length} nodes`);
                 const pendingTasks: {
                     node: NodeData;
                     executionId: string;
@@ -125,20 +113,11 @@ export const orchestrator = task({
                     taskType: "llm" | "crop" | "extract"
                 }[] = [];
 
-                // 1. TRIGGER PHASE (Parallel)
-                // We map over the layer to trigger tasks, but passive nodes are handled immediately.
-                // Note: We use a for-loop for passive nodes to keep context sync simple, 
-                // but for ACTIVE nodes we collect promises to trigger them in parallel if needed?
-                // Actually, `await tasks.trigger` is an API call. Serial triggering is fast enough, 
-                // but strictly speaking "simultaneously" implies Promise.all(triggers).
-
-                // Let's prepare all triggers first
                 const triggerPromises: Promise<void>[] = [];
 
                 for (const node of layer) {
                     console.log(`  Processing Node: ${node.type} (${node.id})`);
 
-                    // --- A. PASSIVE NODES (Immediate) ---
                     if (node.type === "textNode") {
                         context[node.id] = { text: node.data.text };
                         continue;
@@ -154,9 +133,7 @@ export const orchestrator = task({
                         continue;
                     }
 
-                    // --- B. ACTIVE NODES (Prepare & Queue Trigger) ---
                     const triggerFn = async () => {
-                        // Create DB Record first
                         const executionRecord = await prisma.nodeExecution.create({
                             data: {
                                 runId: run.id,
