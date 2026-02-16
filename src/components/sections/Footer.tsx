@@ -177,11 +177,6 @@ const Footer = () => {
             </div>
           </div>
 
-          <div className="text-[10px] uppercase tracking-[0.12em] text-[#1A1A1A]/80 flex gap-4">
-            <span>WEAVY © 2025</span>
-            <span>ALL RIGHTS RESERVED</span>
-            <span>MADE BY SIDDHARTH NAMA</span>
-          </div>
         </div>
       </div>
 
