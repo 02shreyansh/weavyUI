@@ -59,8 +59,8 @@
 
 ```bash
 # Clone the repository
-git clone https://github.com/TuShArBhArDwA/weavy-clone.git
-cd weavy-clone
+git clone https://github.com/02shreyansh/weavyUI.git
+cd weavyUI
 
 # Install dependencies
 npm install
